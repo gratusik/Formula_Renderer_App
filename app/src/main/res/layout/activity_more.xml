@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="moreViewModel"
+            type="com.gratus.formularendererapp.viewModel.activity.MoreViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/parentRL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".view.activity.SplashActivity">
+
+        <RelativeLayout
+            android:id="@+id/headerRl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/app_bg"
+            android:elevation="@dimen/height_8dp">
+
+            <ImageView
+                android:id="@+id/backArrowImg"
+                android:layout_width="@dimen/width_40dp"
+                android:layout_height="@dimen/height_50dp"
+                android:layout_alignParentStart="true"
+                android:layout_margin="@dimen/margin_8dp"
+                android:padding="@dimen/padding_8dp"
+                android:src="@drawable/back_arrow" />
+            <TextView
+                android:id="@+id/headerTv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50dp"
+                android:layout_alignParentTop="true"
+                android:layout_margin="@dimen/margin_8dp"
+                android:layout_toEndOf="@+id/backArrowImg"
+                android:gravity="start|center_vertical"
+                android:src="@drawable/back_arrow"
+                android:text="@string/more_about_formula"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/headerRl"
+            android:layout_marginTop="@dimen/margin_8dp" />
+
+    </RelativeLayout>
+
+</layout>

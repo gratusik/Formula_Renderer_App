@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="formulaViewModel"
+            type="com.gratus.formularendererapp.viewModel.activity.FormulaViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/parentRL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".view.activity.FormulaActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/formulaRl"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_200dp"
+                android:background="@color/app_bg">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/formulaWrapper"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_120dp"
+                    android:layout_margin="@dimen/margin_16dp"
+                    android:background="@color/white"
+                    android:padding="@dimen/padding_8dp"
+                    app:boxStrokeColor="@color/black"
+                    app:errorEnabled="@{formulaViewModel.checkRequest.formulaChange}"
+                    app:errorText="@{formulaViewModel.checkRequest.formulaError}"
+                    app:hintAnimationEnabled="true"
+                    app:hintTextColor="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/formulaEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_80dp"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="top"
+                        android:hint="@string/more_about_formula"
+                        android:padding="@dimen/padding_8dp"
+                        android:singleLine="true"
+                        android:text="@={formulaViewModel.checkRequest.formula}"
+                        android:textSize="@dimen/formuala_edit_text"
+                        android:textStyle="bold"
+                        app:textChangedListener="@{formulaViewModel.checkRequest.formulaTextWatcher}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/goBt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/formulaWrapper"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/margin_right_16dp"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/go"
+                    android:textColor="@color/app_bg"
+                    android:textSize="@dimen/text_size_14sp"
+                    app:rippleColor="@color/grey" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/clearBt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/formulaWrapper"
+                    android:layout_marginEnd="@dimen/margin_right_16dp"
+                    android:layout_toStartOf="@+id/goBt"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/clear"
+                    android:textColor="@color/app_bg"
+                    android:textSize="@dimen/text_size_14sp"
+                    app:rippleColor="@color/grey" />
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/searchRecV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/imageRl"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_160dp"
+                android:layout_margin="@dimen/margin_16dp"
+                android:background="@drawable/relative_layout_bg"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/formulaTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_8dp"
+                    android:text="@{formulaViewModel.checkRequest.formula.concat(@string/render)}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/formulaImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_80dp"
+                    android:layout_below="@+id/formulaTv"
+                    android:scaleType="fitXY" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/moreTv"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/formulaImg"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/more"
+                    android:textColor="@color/app_bg"
+                    android:textSize="@dimen/text_size_14sp"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    app:rippleColor="@color/grey" />
+
+                <ImageView
+                    android:id="@+id/shareImg"
+                    android:layout_width="@dimen/width_30dp"
+                    android:layout_height="@dimen/height_25dp"
+                    android:layout_below="@+id/formulaImg"
+                    android:layout_margin="@dimen/margin_8dp"
+                    android:layout_toStartOf="@+id/moreTv"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_baseline_share_24"
+                    android:visibility="invisible" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/headerTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:layout_marginEnd="@dimen/margin_16dp"
+                android:text="@string/recent_formula"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recentRecV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:layout_marginEnd="@dimen/margin_16dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

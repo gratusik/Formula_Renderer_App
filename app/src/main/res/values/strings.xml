@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Formula Renderer App</string>
+    <string name="network_online" translatable="false">Back online!</string>
+    <string name="network_offline" translatable="false">No internet connection!</string>
+    <string name="go">GO</string>
+    <string name="clear">Clear</string>
+    <string name="hint_formula_text">Type your formula here</string>
+    <string name="more">Open With</string>
+    <string name="more_about_formula">More about Formula</string>
+    <string name="formula_error">Please enter vaild formula</string>
+    <string name="formula_none"></string>
+    <string name="recent_formula">Recent Formulas</string>
+    <string name="render">&#160;rendered as</string>
+</resources>
