@@ -31,9 +31,12 @@ interface FormulaDao {
     //function for checing formula and then insert/ update in room
     fun insertOrUpdate(formula: Formula) {
         var itemsFromDB: List<Formula> = getFormulaCheck(formula.formulaText)
-        if (itemsFromDB.isEmpty())
+        if (itemsFromDB.isEmpty()) {
             insert(formula)
-        else
+        }
+        else {
             updateFormulaTimeStamp(formula.lastUpdated, formula.formulaText)
+        }
+
     }
 }

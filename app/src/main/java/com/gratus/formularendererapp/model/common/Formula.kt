@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "formula_table")
 data class Formula(
-    val formulaText: String,
+    var formulaText: String,
     val formulaDir: String,
     val formulaUrl: String,
     val lastUpdated: String,

@@ -7,6 +7,7 @@ import androidx.databinding.Bindable
 import com.google.gson.annotations.SerializedName
 import com.gratus.formularendererapp.R
 import javax.inject.Inject
+import com.gratus.formularendererapp.util.FormulaValid
 
 class CheckRequest : BaseObservable {
     @SerializedName("q")
@@ -21,20 +22,12 @@ class CheckRequest : BaseObservable {
     }
 
     fun isFormulaValid(): Boolean {
-        return if (formula != null) {
-            val formualPattern: String =
-                "[a-zA-Z0-9\\+\\-\\*/\\(\\)\\^\\{\\}\\[\\]\\t\\.\\,\\;\\?\\:\\!\\=\\%\\$\\>\\<\\~\\/\\|\\\\begin\\\\begin{\\_\\ ]*"
-            if (formula!! matches (formualPattern.toRegex()) && formula!!.length >= 1) {
-                formulaChange = false
-                formulaError = R.string.formula_none
-                notifyChange()
-                true
-            } else {
-                formulaChange = true
-                formulaError = R.string.formula_error
-                notifyChange()
-                false
-            }
+        var result = FormulaValid.isFormulaValid(formula.toString())
+        return if (result) {
+            formulaChange = false
+            formulaError = R.string.formula_none
+            notifyChange()
+            true
         } else {
             formulaChange = true
             formulaError = R.string.formula_error

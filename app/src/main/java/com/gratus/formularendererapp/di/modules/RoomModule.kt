@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.gratus.formularendererapp.repository.FormulaRepo
 import com.gratus.formularendererapp.room.dao.FormulaDao
 import com.gratus.formularendererapp.room.db.FormulaDatabase
+import com.gratus.formularendererapp.service.FormulaService
 import com.gratus.formularendererapp.util.constants.AppConstants
 import dagger.Module
 import dagger.Provides
@@ -30,8 +31,8 @@ class RoomModule(mApplication: Application) {
 
     @Singleton
     @Provides
-    fun providesFormulaRepo(formulaDatabase: FormulaDatabase): FormulaRepo {
-        return FormulaRepo(formulaDatabase)
+    fun providesFormulaRepo(formulaDatabase: FormulaDatabase): FormulaService {
+        return FormulaRepo(formulaDatabase)as FormulaService
     }
 
     @Singleton

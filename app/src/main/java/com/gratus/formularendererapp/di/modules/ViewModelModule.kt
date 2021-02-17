@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.gratus.formularendererapp.di.factory.ViewModelFactory
 import com.gratus.formularendererapp.di.key.ViewModelKey
 import com.gratus.formularendererapp.viewModel.activity.FormulaViewModel
-import com.gratus.formularendererapp.viewModel.activity.MoreViewModel
 import com.gratus.formularendererapp.viewModel.activity.SplashViewModel
 import dagger.Binds
 import dagger.Module
@@ -25,10 +24,5 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FormulaViewModel::class)
     abstract fun bindFormulaViewModel(formulaViewModel: FormulaViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(MoreViewModel::class)
-    abstract fun bindMoreViewModel(moreViewModel: MoreViewModel): ViewModel
 
 }

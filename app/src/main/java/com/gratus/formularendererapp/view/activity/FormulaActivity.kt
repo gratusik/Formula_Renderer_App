@@ -37,6 +37,7 @@ import kotlinx.android.synthetic.main.activity_formula.view.*
 import java.io.*
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class FormulaActivity : BaseActivity(), SearchListListerner {
@@ -71,10 +72,9 @@ class FormulaActivity : BaseActivity(), SearchListListerner {
             ViewModelProviders.of(this, viewModelFactory).get(FormulaViewModel::class.java)
         activityFormulaBinding.formulaViewModel = formulaViewModel
         activityFormulaBinding.lifecycleOwner = this
-        networkCheck(activityFormulaBinding.parentRL)
+        networkCheck(activityFormulaBinding.formulaRL)
         activityFormulaBinding.goBt.setOnClickListener(View.OnClickListener { view -> checkFormula() })
         activityFormulaBinding.clearBt.setOnClickListener(View.OnClickListener { view -> clearTextonClick() })
-//        activityFormulaBinding.moreTv.setOnClickListener(View.OnClickListener { view -> intentMoreActivity() })
         recentList()
         //observe for formula checking result and get cache id to hit another service to get rendered image
         formulaViewModel.checkResponse.observe(this, Observer {
@@ -128,9 +128,7 @@ class FormulaActivity : BaseActivity(), SearchListListerner {
             if (it.size > 0) {
                 if (activityFormulaBinding.imageRl.visibility == View.GONE) {
                     activityFormulaBinding.searchRecV.visibility = View.VISIBLE
-                    formulaViewModel.searchResponse.clear()
-                    formulaViewModel.searchResponse.addAll(it)
-                    updateSearch()
+                    updateSearch(it as ArrayList<Formula>)
                 }
             } else {
                 activityFormulaBinding.searchRecV.visibility = View.GONE
@@ -142,9 +140,7 @@ class FormulaActivity : BaseActivity(), SearchListListerner {
         formulaViewModel.recentResult().observe(this, Observer {
             if (it.size > 0) {
                 recentVisibilty(View.VISIBLE)
-                formulaViewModel.recentResponse.clear()
-                formulaViewModel.recentResponse.addAll(it)
-                updateRecent()
+                updateRecent(it as ArrayList<Formula>)
             } else {
                 recentVisibilty(View.GONE)
             }
@@ -156,15 +152,6 @@ class FormulaActivity : BaseActivity(), SearchListListerner {
         activityFormulaBinding.imageRl.visibility = View.VISIBLE
         val requestOptions = RequestOptions()
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-//        formulaViewModel.getImage(cacheImage)
-//        var bitmap: Bitmap? = null
-//        formulaViewModel.response.observe(this, Observer {
-//            val inputStream: InputStream = it.byteStream()
-//            bitmap = BitmapFactory.decodeStream(inputStream)
-//        })
-//        activityFormulaBinding.formulaImg.setOnClickListener(View.OnClickListener {
-//            bitmap?.let { intentShareActivity(it) }
-//        })
         Glide.with(this)
             .asBitmap()
             .load(url)
@@ -175,7 +162,7 @@ class FormulaActivity : BaseActivity(), SearchListListerner {
                     activityFormulaBinding.moreTv.visibility = View.VISIBLE
                     activityFormulaBinding.shareImg.visibility = View.VISIBLE
                     val uri: Uri = getUriImageFromBitmap(resource, this@FormulaActivity) ?: return
-                    formulaViewModel.checkFormula(url, uri)
+                    formulaViewModel.checkFormula(url, uri.toString())
                     recentList()
                     activityFormulaBinding.shareImg.setOnClickListener(View.OnClickListener {
                         intentShareActivity(uri)
@@ -203,7 +190,7 @@ class FormulaActivity : BaseActivity(), SearchListListerner {
                 ).show()
             }
         } else {
-            showSnack(false, activityFormulaBinding.parentRL)
+            showSnack(false, activityFormulaBinding.formulaRL)
         }
     }
 
@@ -246,11 +233,6 @@ class FormulaActivity : BaseActivity(), SearchListListerner {
         openintent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         startActivity(openintent)
     }
-//    private fun intentMoreActivity() {
-//        val intent = Intent(this, MoreActivity::class.java)
-//        intent.putExtra("formulaText", formulaViewModel.checkRequest.formula.toString())
-//        startActivity(intent)
-//    }
 
     private fun clearTextonClick() {
         activityFormulaBinding.moreTv.visibility = View.INVISIBLE
@@ -283,12 +265,12 @@ class FormulaActivity : BaseActivity(), SearchListListerner {
         recentAdapter.setmListener(this)
     }
 
-    private fun updateSearch() {
-        searchAdapter.addItems(formulaViewModel.searchResponse)
+    private fun updateSearch(formulaList: ArrayList<Formula>) {
+        searchAdapter.addItems(formulaList)
     }
 
-    private fun updateRecent() {
-        recentAdapter.addItems(formulaViewModel.recentResponse)
+    private fun updateRecent(formulaList: ArrayList<Formula>) {
+        recentAdapter.addItems(formulaList)
     }
 
     private fun recentVisibilty(visiblity: Int) {
@@ -296,3 +278,14 @@ class FormulaActivity : BaseActivity(), SearchListListerner {
         activityFormulaBinding.recentRecV.visibility = visiblity
     }
 }
+
+//retrofit image download
+//        formulaViewModel.getImage(cacheImage)
+//        var bitmap: Bitmap? = null
+//        formulaViewModel.response.observe(this, Observer {
+//            val inputStream: InputStream = it.byteStream()
+//            bitmap = BitmapFactory.decodeStream(inputStream)
+//        })
+//        activityFormulaBinding.formulaImg.setOnClickListener(View.OnClickListener {
+//            bitmap?.let { intentShareActivity(it) }
+//        })

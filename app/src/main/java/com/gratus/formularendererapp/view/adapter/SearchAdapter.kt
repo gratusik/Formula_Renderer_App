@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class SearchAdapter @Inject constructor(private var formula: ArrayList<Formula>) :
     RecyclerView.Adapter<BaseViewHolder>() {
-    private var mListener: SearchListListerner? = null
+    var mListener: SearchListListerner? = null
 
     var context: Context? = null
 
@@ -30,10 +30,14 @@ class SearchAdapter @Inject constructor(private var formula: ArrayList<Formula>)
             LayoutInflater.from(parent.context),
             parent, false
         )
-        return SearchListViewHolder(itemSearchRecentBinding)
+        return SearchListViewHolder(itemSearchRecentBinding,mListener,formula)
     }
 
-    private inner class SearchListViewHolder(itemSearchRecentBinding: ItemSearchRecentBinding) :
+    class SearchListViewHolder(
+        itemSearchRecentBinding: ItemSearchRecentBinding,
+        private val mListener: SearchListListerner?,
+        private val formula: ArrayList<Formula>
+    ) :
         BaseViewHolder(itemSearchRecentBinding.root) {
         private val mBinding: ItemSearchRecentBinding = itemSearchRecentBinding
         private var searchItemViewModel: SearchItemViewModel? = null

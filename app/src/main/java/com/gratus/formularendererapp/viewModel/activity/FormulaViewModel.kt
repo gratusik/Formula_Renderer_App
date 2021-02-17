@@ -9,9 +9,9 @@ import androidx.lifecycle.MutableLiveData
 import com.gratus.formularendererapp.model.common.Formula
 import com.gratus.formularendererapp.model.request.CheckRequest
 import com.gratus.formularendererapp.model.response.CheckResponse
-import com.gratus.formularendererapp.repository.CheckRepo
-import com.gratus.formularendererapp.repository.FormulaRepo
-import com.gratus.formularendererapp.repository.ImageRepo
+import com.gratus.formularendererapp.repository.*
+import com.gratus.formularendererapp.service.CheckService
+import com.gratus.formularendererapp.service.FormulaService
 import com.gratus.formularendererapp.util.DateTimeUtil
 import com.gratus.formularendererapp.viewModel.base.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -28,24 +28,21 @@ import java.io.IOException
 import javax.inject.Inject
 
 class FormulaViewModel @Inject constructor(
-    private var checkRepo: CheckRepo,
-    private var formulaRepo: FormulaRepo,
-    private var imageRepo: ImageRepo
+    private var checkRepo: CheckService,
+    private var formulaRepo: FormulaService,
+//    private var imageRepo: ImageRepo
 ) : BaseViewModel() {
     var checkResponse: MutableLiveData<CheckResponse> =
         MutableLiveData<CheckResponse>()
     var response: MutableLiveData<ResponseBody> =
         MutableLiveData<ResponseBody>()
     var checkRequest: CheckRequest = CheckRequest()
-    var searchResponse: ArrayList<Formula> = ArrayList()
-    var recentResponse: ArrayList<Formula> = ArrayList()
-
 
     //Checking formula is correct or not using wiki api
     fun hitCheckForumla() {
         if (checkRequest.isFormulaValid()) {
             compositeDisposable.add(
-                checkRepo.checkFormulaResponse(checkRequest)
+                checkRepo.checkFormula(checkRequest)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableSingleObserver<Response<CheckResponse>>() {
@@ -87,22 +84,22 @@ class FormulaViewModel @Inject constructor(
     }
 
     //getting render image formula from wiki api using retrofit additional we can use instead of glide
-    fun getImage(cachedir: String) {
-        compositeDisposable.add(
-            imageRepo.getImage(cachedir)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<ResponseBody>() {
-                    override fun onSuccess(checkResponses: ResponseBody) {
-                        response.value = checkResponses
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Log.e(TAG, "error");
-                    }
-                })
-        )
-    }
+//    fun getImage(cachedir: String) {
+//        compositeDisposable.add(
+//            imageRepo.getImage(cachedir)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeWith(object : DisposableSingleObserver<ResponseBody>() {
+//                    override fun onSuccess(checkResponses: ResponseBody) {
+//                        response.value = checkResponses
+//                    }
+//
+//                    override fun onError(e: Throwable) {
+//                        Log.e(TAG, "error");
+//                    }
+//                })
+//        )
+//    }
 
     //search result from room  for edit text in offline
     fun searchResult(formulaText: String): LiveData<List<Formula>> {
@@ -115,12 +112,12 @@ class FormulaViewModel @Inject constructor(
     }
 
     //check formula is there in room db or not and then insert or update accordingly
-    fun checkFormula(url: String, uri: Uri) {
+    fun checkFormula(url: String, uri: String) {
         GlobalScope.launch {
-            formulaRepo.insertOrUpdate(
+              formulaRepo.insertOrUpdate(
                 Formula(
                     checkRequest.formula.toString(),
-                    uri.toString(),
+                    uri,
                     url,
                     DateTimeUtil.currentTimeStamp()
                 )

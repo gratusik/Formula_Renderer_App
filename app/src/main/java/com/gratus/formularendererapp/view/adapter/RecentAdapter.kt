@@ -30,10 +30,14 @@ class RecentAdapter @Inject constructor(private var formula: ArrayList<Formula>)
             LayoutInflater.from(parent.context),
             parent, false
         )
-        return SearchListViewHolder(itemSearchRecentBinding)
+        return SearchListViewHolder(itemSearchRecentBinding,mListener,formula)
     }
 
-    private inner class SearchListViewHolder(itemSearchRecentBinding: ItemSearchRecentBinding) :
+  class SearchListViewHolder(
+      itemSearchRecentBinding: ItemSearchRecentBinding,
+      private val mListener: SearchListListerner?,
+      private val formula: ArrayList<Formula>
+  ) :
         BaseViewHolder(itemSearchRecentBinding.root) {
         private val mBinding: ItemSearchRecentBinding = itemSearchRecentBinding
         private var searchItemViewModel: SearchItemViewModel? = null

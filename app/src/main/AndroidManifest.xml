@@ -30,13 +30,6 @@
             android:theme="@style/Theme.FormulaRendererApp"
             android:windowSoftInputMode="adjustPan"
             tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".view.activity.MoreActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.FormulaRendererApp"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
